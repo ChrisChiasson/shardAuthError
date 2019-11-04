@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<body>
+ <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-database.js"></script>
+ <script>
+  const config={
+   apiKey: "AIzaSyDLMc0GUf5n2nQa3aqpELQu7lziprQOGs8",
+   authDomain: "shardautherror.firebaseapp.com",
+   databaseURL: "https://shardautherror.firebaseio.com",
+   projectId: "shardautherror",
+   storageBucket: "shardautherror.appspot.com",
+   messagingSenderId: "841096336504",
+   appId: "1:841096336504:web:9899961c8250caa552498d"
+  };
+
+  const shard="https://shardautherror-1e9ed.firebaseio.com/";
+  
+  async function init(){
+   try{
+    firebase.database.enableLogging(true);
+    const defaultApp=firebase.initializeApp(config);
+    const auth=defaultApp.auth();
+    const s="alice@example.com";
+    await auth.signInWithEmailAndPassword(s,s);
+    const uid= auth.currentUser.uid;
+    const shardApp=firebase.initializeApp({databaseURL:shard},'dbAppShard');
+    const db=firebase.database(shardApp);
+    const ref= db.ref("/chat/"+uid+"/fail/"+uid);
+    const time= firebase.database.ServerValue.TIMESTAMP;
+    ref.set({time});
+   } catch(e) {
+    console.error("init failed",e);
+   }
+  }
+ 
+  init();
+ </script>
+</body>
+</html>

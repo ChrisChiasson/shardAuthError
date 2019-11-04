@@ -1,0 +1,16 @@
+{
+ "rules":{
+  "chat":{
+   "$ownerId":{
+    "fail":{
+     "$pId":{
+      ".read": "$pId== auth.uid&& $ownerId== auth.uid",
+      ".write": "$pId== auth.uid&& $ownerId== auth.uid",
+      "time":{".validate": "newData.val()== now"},
+      "$other":{".validate": "newData.isString()&& newData.val().length>= 28"}
+     }
+    }
+   }
+  }
+ }
+}
